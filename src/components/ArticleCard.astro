@@ -1,0 +1,26 @@
+---
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+}
+
+const { href, title, description, pubDate, tags = [] } = Astro.props;
+---
+
+<li class="card">
+  <h3><a href={href}>{title}</a></h3>
+  <p class="muted"><FormattedDate date={pubDate} /></p>
+  <p>{description}</p>
+  {
+    tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((tag) => <li class="tag">{tag}</li>)}
+      </ul>
+    )
+  }
+</li>

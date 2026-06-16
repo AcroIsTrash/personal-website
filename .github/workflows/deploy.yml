@@ -1,0 +1,45 @@
+# Deploy to GitHub Pages.
+#
+# Before this works you must:
+#   1. In repo Settings → Pages, set "Source" to "GitHub Actions".
+#   2. In astro.config.mjs, set `site` to 'https://<username>.github.io' and,
+#      for a *project* site, uncomment `base: '/personal-website'`.
+#
+# Prefer Vercel or Netlify instead? Delete this file — they auto-detect Astro
+# and deploy on push with no extra config.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, cancel in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build with Astro
+        uses: withastro/action@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

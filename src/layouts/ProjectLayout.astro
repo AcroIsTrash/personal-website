@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  repo?: string;
+  link?: string;
+  tags?: string[];
+}
+
+const { title, description, repo, link, tags = [] } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="prose">
+    <header>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      {
+        (link || repo) && (
+          <p class="links">
+            {link && <a href={link}>Live ↗</a>}
+            {repo && <a href={repo}>Source ↗</a>}
+          </p>
+        )
+      }
+      {
+        tags.length > 0 && (
+          <ul class="tags">
+            {tags.map((tag) => <li class="tag">{tag}</li>)}
+          </ul>
+        )
+      }
+    </header>
+    <hr />
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  .links {
+    display: flex;
+    gap: 1rem;
+    margin: 0.5rem 0 0;
+  }
+</style>

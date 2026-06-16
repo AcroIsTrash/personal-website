@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured)
+);
+---
+
+<BaseLayout title="Projects" description="Projects by acroistrash.">
+  <h1>Projects</h1>
+  {
+    projects.length > 0 ? (
+      <ul class="card-list">
+        {projects.map((project) => (
+          <ProjectCard
+            href={`${base}/projects/${project.slug}/`}
+            title={project.data.title}
+            description={project.data.description}
+            tags={project.data.tags}
+            repo={project.data.repo}
+            link={project.data.link}
+          />
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">No projects published yet.</p>
+    )
+  }
+</BaseLayout>
