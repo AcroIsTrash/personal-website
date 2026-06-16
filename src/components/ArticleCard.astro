@@ -1,29 +1,62 @@
 ---
-import FormattedDate from './FormattedDate.astro';
-import TagList from './TagList.astro';
-import { accentFor } from '../utils/accent';
+import Icon from './Icon.astro';
 
 interface Props {
   href: string;
   title: string;
-  description: string;
-  pubDate: Date;
+  date: string;
+  readTime: string;
+  excerpt: string;
   tags?: string[];
+  variant?: 'compact' | 'full';
 }
 
-const { href, title, description, pubDate, tags = [] } = Astro.props;
+const { href, title, date, readTime, excerpt, tags = [], variant = 'compact' } = Astro.props;
+const full = variant === 'full';
 ---
 
-<li class="card" style={`--card-accent: ${accentFor(title)}`}>
-  <h3><a href={href}>{title}</a></h3>
-  <p class="muted date"><FormattedDate date={pubDate} /></p>
-  <p>{description}</p>
-  <TagList tags={tags} />
-</li>
-
-<style>
-  .date {
-    font-size: 0.85rem;
-    margin-top: 0.1rem;
+<article
+  class="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#130e23]/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/10 hover:bg-[#191330]/80"
+  data-search
+  data-title={title.toLowerCase()}
+  data-tags={tags.join(' ').toLowerCase()}
+>
+  {
+    full && (
+      <div class="accent-gradient pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-tr-2xl opacity-[0.06] blur-xl" />
+    )
   }
-</style>
+  {
+    !full && (
+      <div class="accent-gradient-b absolute bottom-6 left-0 top-6 w-1 rounded-r-lg opacity-30 transition-opacity duration-300 group-hover:opacity-100" />
+    )
+  }
+
+  <div class:list={[full ? '' : 'pl-4', 'relative flex flex-col gap-2 md:flex-row md:items-start md:justify-between']}>
+    <div class="flex-1 space-y-2">
+      <div class="flex items-center gap-2 text-xs text-zinc-500">
+        <span>{date}</span><span>&bull;</span><span>{readTime}</span>
+      </div>
+      <h3 class="text-lg font-bold text-zinc-100 transition-colors group-hover:text-white">
+        <a href={href} class="no-underline before:absolute before:inset-0">{title}</a>
+      </h3>
+      <p class="line-clamp-2 text-sm leading-relaxed text-zinc-400">{excerpt}</p>
+      {
+        tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 pt-1">
+            {tags.map((tag) => (
+              <span class="accent-badge rounded-full px-2.5 py-0.5 text-xs font-semibold">#{tag}</span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+    {
+      full && (
+        <span class="accent-text relative z-10 mt-1 hidden items-center gap-1.5 self-start rounded-lg border border-white/5 bg-[#1c1233] px-3.5 py-1.5 text-xs font-bold md:inline-flex">
+          Read Post <Icon name="arrow-right" size={14} />
+        </span>
+      )
+    }
+  </div>
+</article>

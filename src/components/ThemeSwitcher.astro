@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro';
+
+const accents = [
+  { id: 'rose', dot: 'bg-pink-500' },
+  { id: 'violet', dot: 'bg-violet-500' },
+  { id: 'cyan', dot: 'bg-cyan-500' },
+  { id: 'amber', dot: 'bg-amber-500' },
+];
+---
+
+<div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-white/5 bg-[#140e24]/90 p-3 shadow-2xl backdrop-blur-xl">
+  <div class="flex items-center gap-1.5 border-r border-white/10 pr-2">
+    <Icon name="sliders" size={16} class="text-zinc-400" />
+    <span class="text-xs font-semibold text-zinc-400">Accent</span>
+  </div>
+  <div class="flex gap-1.5" id="accent-buttons">
+    {
+      accents.map((a) => (
+        <button
+          type="button"
+          data-accent-btn={a.id}
+          title={`Switch to ${a.id}`}
+          aria-label={`Switch accent to ${a.id}`}
+          class:list={[
+            'h-5 w-5 rounded-full transition-transform duration-300 hover:scale-125 focus:outline-none',
+            a.dot,
+          ]}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const KEY = 'accent';
+  const valid = ['rose', 'violet', 'cyan', 'amber'];
+
+  function apply(accent: string) {
+    document.documentElement.dataset.accent = accent;
+    document.querySelectorAll<HTMLButtonElement>('[data-accent-btn]').forEach((btn) => {
+      const on = btn.dataset.accentBtn === accent;
+      btn.classList.toggle('ring-2', on);
+      btn.classList.toggle('ring-white', on);
+      btn.classList.toggle('ring-offset-2', on);
+      btn.classList.toggle('ring-offset-[#140e24]', on);
+      btn.classList.toggle('scale-110', on);
+      btn.classList.toggle('opacity-60', !on);
+    });
+  }
+
+  const current = document.documentElement.dataset.accent || 'rose';
+  apply(valid.includes(current) ? current : 'rose');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-accent-btn]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const accent = btn.dataset.accentBtn!;
+      apply(accent);
+      try {
+        localStorage.setItem(KEY, accent);
+      } catch {}
+    });
+  });
+</script>

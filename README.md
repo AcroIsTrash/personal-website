@@ -1,8 +1,19 @@
 # personal-website
 
-A fast, minimal personal site for publishing **articles** and **projects**,
-built with [Astro](https://astro.build). Content is authored as Markdown files —
-publish by committing a new file.
+A fast personal site for publishing **articles** and **projects**, built with
+[Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com) in a
+dark, glassmorphic style. Content is authored as Markdown files — publish by
+committing a new file.
+
+Features: switchable accent themes (rose / violet / cyan / amber, saved per
+visitor), live article search, an RSS feed at `/rss.xml`, and per-article
+reading-time estimates.
+
+## Personalize
+
+Edit `src/config.ts` to set your name, tagline, social links, default accent,
+and the hero "status card" details (availability, now-listening, day streak,
+toolbox). No need to touch component markup for these.
 
 ## Develop
 
@@ -19,14 +30,16 @@ npm run preview  # preview the production build locally
 
 ```
 src/
-├── components/        # Reusable .astro components (Header, Footer, cards, ...)
+├── config.ts          # Site personalization (name, socials, hero status card)
+├── components/        # Reusable .astro components (Header, cards, Icon, ...)
 ├── content/
 │   ├── config.ts      # Collection schemas (frontmatter validation)
 │   ├── articles/      # Articles — one Markdown file per post
 │   └── projects/      # Projects — one Markdown file per project
 ├── layouts/           # Page shells (Base, Article, Project)
-├── pages/             # Routes (index, about, 404, articles/, projects/)
-└── styles/            # global.css
+├── pages/             # Routes (index, about, 404, articles/, projects/, rss.xml)
+├── styles/            # global.css (Tailwind import + theme tokens)
+└── utils/             # Small helpers (reading time)
 public/                # Static assets served as-is (favicon, etc.)
 ```
 

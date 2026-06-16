@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { readingTime } from '../../utils/readingTime';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -21,6 +22,7 @@ const { Content } = await article.render();
   description={article.data.description}
   pubDate={article.data.pubDate}
   updatedDate={article.data.updatedDate}
+  readTime={readingTime(article.body)}
   tags={article.data.tags}
 >
   <Content />

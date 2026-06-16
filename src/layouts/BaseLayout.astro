@@ -1,48 +1,65 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
+import { site } from '../config';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
+  wide?: boolean;
 }
 
-const { title, description = 'Articles and projects by acroistrash.' } = Astro.props;
-const siteTitle = 'acroistrash';
-const fullTitle = title === siteTitle ? title : `${title} · ${siteTitle}`;
-
+const { title, description = 'Articles and projects by acroistrash.', wide = false } = Astro.props;
+const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-accent={site.defaultAccent}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
     <link rel="canonical" href={canonicalURL} />
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+
+    <!-- Set the saved accent before paint to avoid a flash -->
+    <script is:inline>
+      (() => {
+        try {
+          const a = localStorage.getItem('accent');
+          if (a && ['rose', 'violet', 'cyan', 'amber'].includes(a)) {
+            document.documentElement.dataset.accent = a;
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+  <body class="relative min-h-screen overflow-x-hidden bg-[#0a0712] text-zinc-100">
+    <!-- Decorative blur backdrops -->
+    <div class="pointer-events-none absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-purple-900/10 blur-[120px]"></div>
+    <div class="pointer-events-none absolute right-1/4 top-1/3 h-[600px] w-[600px] rounded-full bg-rose-900/5 blur-[150px]"></div>
+    <div class="pointer-events-none absolute bottom-10 left-1/3 h-[450px] w-[450px] rounded-full bg-violet-900/10 blur-[130px]"></div>
+
+    <div class="relative">
+      <Header />
+      <main class:list={['mx-auto px-6 py-12', wide ? 'max-w-6xl' : 'max-w-3xl']}>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <ThemeSwitcher />
   </body>
 </html>

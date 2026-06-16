@@ -1,94 +1,64 @@
 ---
-const base = import.meta.env.BASE_URL;
-const path = (p: string) => `${base.replace(/\/$/, '')}/${p}`.replace(/\/+/g, '/');
+import Icon from './Icon.astro';
+import { site, social } from '../config';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const links = [
-  { href: base, label: 'Home' },
-  { href: path('articles'), label: 'Articles' },
-  { href: path('projects'), label: 'Projects' },
-  { href: path('about'), label: 'About' },
+  { href: `${base}/` || '/', label: 'Home', icon: 'compass', match: (p: string) => p === (base || '/') },
+  { href: `${base}/articles/`, label: 'Articles', icon: 'book-open', match: (p: string) => p.startsWith(`${base}/articles`) },
+  { href: `${base}/projects/`, label: 'Projects', icon: 'folder-git-2', match: (p: string) => p.startsWith(`${base}/projects`) },
+  { href: `${base}/about/`, label: 'About', icon: 'user', match: (p: string) => p.startsWith(`${base}/about`) },
 ];
-
-const current = Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<header class="site-header">
-  <nav>
-    <a class="brand" href={base}>acroistrash</a>
-    <ul>
+<header class="sticky top-0 z-40 border-b border-white/5 bg-[#0a0712]/75 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <!-- Logo -->
+    <a href={`${base}/`} class="group flex items-center gap-2">
+      <span class="accent-gradient-tr block h-8 w-8 rounded-xl p-px shadow-lg">
+        <span class="flex h-full w-full items-center justify-center rounded-[11px] bg-[#110a1f]">
+          <span class="accent-clip text-xs font-black">a</span>
+        </span>
+      </span>
+      <span class="text-sm font-bold tracking-tight text-zinc-200 transition-colors group-hover:text-white">
+        {site.name}
+      </span>
+    </a>
+
+    <!-- Pill nav -->
+    <nav class="flex items-center gap-1 rounded-full border border-white/5 bg-[#140e24]/60 p-1">
       {
         links.map((link) => {
-          const href = link.href.replace(/\/$/, '') || '/';
-          const isActive = current === href || (href !== base.replace(/\/$/, '') && current.startsWith(href));
+          const active = link.match(here);
           return (
-            <li>
-              <a href={link.href} aria-current={isActive ? 'page' : undefined}>
-                {link.label}
-              </a>
-            </li>
+            <a
+              href={link.href}
+              aria-current={active ? 'page' : undefined}
+              class:list={[
+                'flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 no-underline',
+                active
+                  ? 'accent-gradient text-white shadow-lg'
+                  : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-200',
+              ]}
+            >
+              <Icon name={link.icon} size={14} />
+              <span class="hidden sm:inline">{link.label}</span>
+            </a>
           );
         })
       }
-    </ul>
-  </nav>
+    </nav>
+
+    <!-- Socials -->
+    <div class="flex items-center gap-3">
+      <a href={social.github} class="rounded-xl border border-white/5 bg-[#140e24]/80 p-1.5 text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100" aria-label="GitHub">
+        <Icon name="github" size={16} />
+      </a>
+      <a href={social.twitter} class="rounded-xl border border-white/5 bg-[#140e24]/80 p-1.5 text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100" aria-label="Twitter">
+        <Icon name="twitter" size={16} />
+      </a>
+    </div>
+  </div>
 </header>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    backdrop-filter: saturate(160%) blur(10px);
-  }
-
-  nav {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .brand {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.35rem;
-    letter-spacing: -0.02em;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .brand:hover {
-    text-decoration: none;
-    opacity: 0.85;
-  }
-
-  ul {
-    display: flex;
-    gap: 1.25rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul a {
-    color: var(--text-muted);
-  }
-
-  ul a:hover,
-  ul a[aria-current='page'] {
-    color: var(--text);
-    text-decoration: none;
-  }
-
-  ul a[aria-current='page'] {
-    font-weight: 600;
-  }
-</style>
