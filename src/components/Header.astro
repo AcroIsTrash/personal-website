@@ -35,8 +35,12 @@ const current = Astro.url.pathname.replace(/\/$/, '');
 
 <style>
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     border-bottom: 1px solid var(--border);
-    background: var(--bg);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: saturate(160%) blur(10px);
   }
 
   nav {
@@ -51,14 +55,19 @@ const current = Astro.url.pathname.replace(/\/$/, '');
   }
 
   .brand {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .brand:hover {
     text-decoration: none;
-    color: var(--accent);
+    opacity: 0.85;
   }
 
   ul {

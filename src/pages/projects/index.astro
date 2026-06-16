@@ -11,7 +11,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 ---
 
 <BaseLayout title="Projects" description="Projects by acroistrash.">
-  <h1>Projects</h1>
+  <h1 class="gradient-text">Projects</h1>
   {
     projects.length > 0 ? (
       <ul class="card-list">

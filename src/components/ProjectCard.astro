@@ -1,4 +1,7 @@
 ---
+import TagList from './TagList.astro';
+import { accentFor } from '../utils/accent';
+
 interface Props {
   href: string;
   title: string;
@@ -11,27 +14,22 @@ interface Props {
 const { href, title, description, tags = [], repo, link } = Astro.props;
 ---
 
-<li class="card">
+<li class="card" style={`--card-accent: ${accentFor(title)}`}>
   <h3><a href={href}>{title}</a></h3>
   <p>{description}</p>
   <p class="links">
     {link && <a href={link}>Live ↗</a>}
     {repo && <a href={repo}>Source ↗</a>}
   </p>
-  {
-    tags.length > 0 && (
-      <ul class="tags">
-        {tags.map((tag) => <li class="tag">{tag}</li>)}
-      </ul>
-    )
-  }
+  <TagList tags={tags} />
 </li>
 
 <style>
   .links {
     display: flex;
     gap: 1rem;
-    margin: 0.5rem 0 0;
+    margin: 0.6rem 0 0;
     font-size: 0.9rem;
+    font-weight: 500;
   }
 </style>

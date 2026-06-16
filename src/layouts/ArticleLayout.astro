@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import TagList from '../components/TagList.astro';
 
 interface Props {
   title: string;
@@ -16,18 +17,12 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 <BaseLayout title={title} description={description}>
   <article class="prose">
     <header>
-      <h1>{title}</h1>
+      <h1 class="gradient-text">{title}</h1>
       <p class="muted">
         <FormattedDate date={pubDate} />
         {updatedDate && <span> · Updated <FormattedDate date={updatedDate} /></span>}
       </p>
-      {
-        tags.length > 0 && (
-          <ul class="tags">
-            {tags.map((tag) => <li class="tag">{tag}</li>)}
-          </ul>
-        )
-      }
+      <TagList tags={tags} />
     </header>
     <hr />
     <slot />

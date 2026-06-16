@@ -1,5 +1,7 @@
 ---
 import FormattedDate from './FormattedDate.astro';
+import TagList from './TagList.astro';
+import { accentFor } from '../utils/accent';
 
 interface Props {
   href: string;
@@ -12,15 +14,16 @@ interface Props {
 const { href, title, description, pubDate, tags = [] } = Astro.props;
 ---
 
-<li class="card">
+<li class="card" style={`--card-accent: ${accentFor(title)}`}>
   <h3><a href={href}>{title}</a></h3>
-  <p class="muted"><FormattedDate date={pubDate} /></p>
+  <p class="muted date"><FormattedDate date={pubDate} /></p>
   <p>{description}</p>
-  {
-    tags.length > 0 && (
-      <ul class="tags">
-        {tags.map((tag) => <li class="tag">{tag}</li>)}
-      </ul>
-    )
-  }
+  <TagList tags={tags} />
 </li>
+
+<style>
+  .date {
+    font-size: 0.85rem;
+    margin-top: 0.1rem;
+  }
+</style>

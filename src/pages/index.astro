@@ -16,16 +16,17 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 ---
 
 <BaseLayout title="acroistrash">
-  <section>
-    <h1>Hi, I'm acroistrash 👋</h1>
-    <p class="muted">
+  <section class="hero">
+    <p class="eyebrow">Personal site</p>
+    <h1>Hi, I'm <span class="gradient-text">acroistrash</span> 👋</h1>
+    <p class="lead">
       I write about things I'm learning and build projects in my spare time.
       This is where I publish both. Edit this intro in <code>src/pages/index.astro</code>.
     </p>
   </section>
 
   <section>
-    <h2>Latest articles</h2>
+    <h2 class="section-heading">Latest articles</h2>
     {
       articles.length > 0 ? (
         <ul class="card-list">
@@ -47,7 +48,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
   </section>
 
   <section>
-    <h2>Projects</h2>
+    <h2 class="section-heading">Projects</h2>
     {
       projects.length > 0 ? (
         <ul class="card-list">
@@ -69,3 +70,28 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
     <p class="section-link"><a href={`${base}/projects/`}>All projects →</a></p>
   </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    padding: 1.5rem 0 2.5rem;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--pink);
+    margin: 0 0 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 38rem;
+  }
+</style>
