@@ -9,29 +9,27 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   (a, b) => Number(b.data.featured) - Number(a.data.featured)
 );
 
-// A project's "category" is its first tag; build the filter list from them.
 const withCategory = projects.map((p) => ({ ...p, category: p.data.tags[0] ?? 'misc' }));
 const categories = ['all', ...Array.from(new Set(withCategory.map((p) => p.category)))];
+const total = withCategory.length;
 ---
 
 <BaseLayout title="Projects" description="Projects by acroistrash." wide>
   <div class="space-y-8">
-    <div class="space-y-4 py-6 text-center">
-      <h1 class="text-4xl font-black tracking-tight">Active Repositories</h1>
-      <p class="mx-auto max-w-lg text-zinc-400">
-        Latest visual designs, tooling, core APIs, and experiments.
-      </p>
-      <div class="flex flex-wrap items-center justify-center gap-2 pt-4" id="filters">
+    <div class="flex flex-col justify-between gap-4 pb-2 sm:flex-row sm:items-center">
+      <div class="space-y-2">
+        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// Interactive Archive</span>
+        <h1 class="font-display text-4xl font-extrabold tracking-tight text-white">Projects</h1>
+      </div>
+      <div class="flex flex-wrap items-center gap-1 rounded-xl border border-white/5 bg-zinc-900/60 p-1" id="filters">
         {
           categories.map((cat, i) => (
             <button
               type="button"
               data-filter-btn={cat}
               class:list={[
-                'rounded-xl px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300',
-                i === 0
-                  ? 'accent-gradient text-white shadow-lg'
-                  : 'border border-white/5 bg-[#130e23]/80 text-zinc-400 hover:text-zinc-100',
+                'rounded-lg px-4 py-2 font-mono text-[11px] uppercase tracking-widest transition-all duration-300',
+                i === 0 ? 'accent-gradient text-white' : 'text-zinc-400 hover:text-white',
               ]}
             >
               {cat}
@@ -41,9 +39,9 @@ const categories = ['all', ...Array.from(new Set(withCategory.map((p) => p.categ
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" id="project-grid">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2" id="project-grid">
       {
-        withCategory.map((p) => (
+        withCategory.map((p, i) => (
           <ProjectCard
             href={`${base}/projects/${p.slug}/`}
             title={p.data.title}
@@ -51,7 +49,8 @@ const categories = ['all', ...Array.from(new Set(withCategory.map((p) => p.categ
             tags={p.data.tags}
             repo={p.data.repo}
             link={p.data.link}
-            category={p.category}
+            index={i + 1}
+            total={total}
             variant="full"
           />
         ))
@@ -62,21 +61,19 @@ const categories = ['all', ...Array.from(new Set(withCategory.map((p) => p.categ
   <script>
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter-btn]'));
     const cards = Array.from(document.querySelectorAll<HTMLElement>('#project-grid [data-filter]'));
-    const activeCls = ['accent-gradient', 'text-white', 'shadow-lg'];
-    const idleCls = ['border', 'border-white/5', 'bg-[#130e23]/80', 'text-zinc-400', 'hover:text-zinc-100'];
+    const onCls = ['accent-gradient', 'text-white'];
+    const offCls = ['text-zinc-400', 'hover:text-white'];
 
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const filter = btn.dataset.filterBtn;
         buttons.forEach((b) => {
           const on = b === btn;
-          b.classList.toggle('text-zinc-400', !on);
-          activeCls.forEach((c) => b.classList.toggle(c, on));
-          idleCls.forEach((c) => b.classList.toggle(c, !on));
+          onCls.forEach((c) => b.classList.toggle(c, on));
+          offCls.forEach((c) => b.classList.toggle(c, !on));
         });
         cards.forEach((card) => {
-          const show = filter === 'all' || card.dataset.category === filter;
-          card.classList.toggle('hidden', !show);
+          card.classList.toggle('hidden', !(filter === 'all' || card.dataset.category === filter));
         });
       });
     });

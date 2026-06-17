@@ -1,27 +1,29 @@
 @import 'tailwindcss';
 
 /* Self-hosted variable fonts */
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/space-grotesk';
 @import '@fontsource-variable/jetbrains-mono';
 
 @theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Plus Jakarta Sans Variable', ui-sans-serif, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Dark glass surface palette */
-  --color-base: #0a0712;
-  --color-base-deep: #090610;
-  --color-panel: #110b22;
-  --color-panel-2: #130e23;
-  --color-panel-3: #140e24;
-  --color-panel-hover: #17102d;
-  --color-chip: #1a0f2e;
-  --color-chip-2: #1c1233;
+  /* Neutral zinc surface palette */
+  --color-base: #09090b;
+  --color-base-deep: #050507;
+  --color-panel: #18181b;
+  --color-panel-2: #131316;
+  --color-panel-3: #1c1c20;
+  --color-panel-hover: #232328;
+  --color-chip: #18181b;
+  --color-chip-2: #1f1f23;
 }
 
 /*
-  Switchable accent system. The floating theme switcher sets
-  `data-accent` on <html>; everything accent-colored reads these vars.
+  Switchable gradient accent system. The floating theme switcher sets
+  `data-accent` on <html>; accent-colored utilities read these vars.
 */
 :root,
 [data-accent='rose'] {
@@ -68,10 +70,7 @@ html {
   font-family: var(--font-sans);
   scroll-behavior: smooth;
   background: var(--color-base);
-  color: #f4f4f5;
-  /* Guard against any stray element triggering horizontal scroll on mobile.
-     `clip` (vs hidden) avoids turning <html> into a scroll container, so the
-     sticky header keeps working. */
+  color: #fafafa;
   overflow-x: clip;
 }
 
@@ -88,68 +87,110 @@ body {
   color: var(--acc-text);
 }
 
-/* Accent utility classes (driven by the switchable vars above) */
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-base);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--acc-from);
+}
+
+/* Accent utilities (driven by the switchable vars above) */
 .accent-gradient {
   background-image: linear-gradient(to right, var(--acc-from), var(--acc-to));
 }
-
-.accent-gradient-tr {
-  background-image: linear-gradient(to top right, var(--acc-from), var(--acc-to));
-}
-
 .accent-gradient-b {
   background-image: linear-gradient(to bottom, var(--acc-from), var(--acc-to));
 }
-
 .accent-text {
   color: var(--acc-text);
 }
-
 .accent-clip {
   background-image: linear-gradient(to right, var(--acc-from), var(--acc-to));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
-.accent-glow {
-  box-shadow: 0 12px 32px -8px var(--acc-glow);
+.accent-dot {
+  background-color: var(--acc-from);
 }
-
+.accent-glow-text {
+  box-shadow: 0 12px 40px -8px var(--acc-glow);
+}
 .accent-badge {
   color: var(--acc-text);
   background: var(--acc-soft);
   border: 1px solid var(--acc-border);
 }
-
 .accent-ring-focus:focus {
   outline: none;
   border-color: var(--acc-border);
 }
 
-/* Thin scrollbars */
-.scroll-thin {
-  scrollbar-width: thin;
-  scrollbar-color: #2b2440 transparent;
+/* Accent-tinted ambient glow (follows the active theme) */
+.accent-glow-bg {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--acc-from) 16%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+/* Glossy hairline along the top edge of a panel */
+.glossy-top {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.25), transparent);
+}
+
+/* Animated underline that grows on hover (nav links) */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0;
+  background-image: linear-gradient(to right, var(--acc-from), var(--acc-to));
+  transition: width 0.3s ease;
+}
+.link-underline:hover::after,
+.link-underline[aria-current='page']::after {
+  width: 100%;
 }
 
 /* Long-form article prose */
 .prose-glass {
-  color: #c5c2d0;
+  color: #c4c4c8;
   font-size: 1.05rem;
   line-height: 1.8;
 }
-.prose-glass h2 {
-  color: #f4f4f5;
-  font-size: 1.6rem;
-  font-weight: 800;
+.prose-glass h2,
+.prose-glass h3 {
+  font-family: var(--font-display);
+  color: #fafafa;
   letter-spacing: -0.01em;
+}
+.prose-glass h2 {
+  font-size: 1.55rem;
+  font-weight: 700;
   margin: 2.25rem 0 0.75rem;
 }
 .prose-glass h3 {
-  color: #f4f4f5;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   margin: 1.75rem 0 0.5rem;
 }
 .prose-glass p,
@@ -167,7 +208,7 @@ body {
   text-decoration-color: var(--acc-text);
 }
 .prose-glass strong {
-  color: #ececf1;
+  color: #ededf0;
 }
 .prose-glass code {
   font-family: var(--font-mono);
@@ -178,8 +219,8 @@ body {
   border-radius: 6px;
 }
 .prose-glass pre {
-  background: #0d0a17 !important;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #0c0c0e !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 1.1rem 1.25rem;
   overflow-x: auto;
@@ -198,7 +239,7 @@ body {
 }
 .prose-glass img {
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 .prose-glass hr {
   border: none;

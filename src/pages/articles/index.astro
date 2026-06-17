@@ -15,25 +15,26 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
 
 <BaseLayout title="Articles" description="Articles by acroistrash." wide>
   <div class="mx-auto max-w-4xl space-y-8">
-    <div class="space-y-4 py-8 text-center">
-      <h1 class="text-4xl font-black tracking-tight">The Dev Journal</h1>
-      <p class="mx-auto max-w-md text-zinc-400">
+    <div class="space-y-4 py-6 text-center">
+      <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// The Dev Journal</span>
+      <h1 class="font-display text-4xl font-extrabold tracking-tight text-white">Articles</h1>
+      <p class="mx-auto max-w-md text-sm font-light text-zinc-400">
         Architectural insights, design notes, lessons from failures, and code snippets.
       </p>
-      <div class="relative mx-auto max-w-md pt-4">
-        <span class="absolute left-3.5 top-1/2 mt-2 -translate-y-1/2 text-zinc-500">
-          <Icon name="search" size={16} />
+      <div class="relative mx-auto max-w-md pt-2">
+        <span class="absolute left-3.5 top-1/2 mt-1 -translate-y-1/2 text-zinc-500">
+          <Icon name="search" size={15} />
         </span>
         <input
           type="text"
           id="article-search"
           placeholder="Search articles..."
-          class="accent-ring-focus w-full rounded-xl border border-white/5 bg-[#130e23]/80 py-2 pl-10 pr-4 text-sm text-zinc-100 placeholder-zinc-500 transition-colors"
+          class="accent-ring-focus w-full rounded-xl border border-white/10 bg-zinc-900/60 py-2.5 pl-10 pr-4 text-sm text-zinc-100 placeholder-zinc-600 transition-colors"
         />
       </div>
     </div>
 
-    <div class="space-y-6" id="article-list">
+    <div class="space-y-4" id="article-list">
       {
         articles.map((a) => (
           <ArticleCard
@@ -43,12 +44,11 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
             readTime={readingTime(a.body)}
             excerpt={a.data.description}
             tags={a.data.tags}
-            variant="full"
           />
         ))
       }
     </div>
-    <p id="no-results" class="hidden py-8 text-center text-sm text-zinc-500">No articles match your search.</p>
+    <p id="no-results" class="hidden py-8 text-center font-mono text-xs text-zinc-500">No articles match your search.</p>
   </div>
 
   <script>
