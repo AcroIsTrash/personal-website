@@ -1,9 +1,8 @@
 # Deploy to GitHub Pages.
 #
-# Before this works you must:
-#   1. In repo Settings → Pages, set "Source" to "GitHub Actions".
-#   2. In astro.config.mjs, set `site` to 'https://<username>.github.io' and,
-#      for a *project* site, uncomment `base: '/personal-website'`.
+# One-time setup: in repo Settings → Pages, set "Source" to "GitHub Actions".
+# `site` and `base` are already configured in astro.config.mjs for the
+# project site at https://acroistrash.github.io/personal-website/
 #
 # Prefer Vercel or Netlify instead? Delete this file — they auto-detect Astro
 # and deploy on push with no extra config.
@@ -11,7 +10,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/personal-website-articles-projects-g8lqh2
   workflow_dispatch:
 
 permissions:
