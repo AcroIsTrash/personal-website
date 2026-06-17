@@ -69,11 +69,17 @@ html {
   scroll-behavior: smooth;
   background: var(--color-base);
   color: #f4f4f5;
+  /* Guard against any stray element triggering horizontal scroll on mobile.
+     `clip` (vs hidden) avoids turning <html> into a scroll container, so the
+     sticky header keeps working. */
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
