@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { status } from '../config';
+---
+
+<div class="group relative">
+  <div class="accent-gradient absolute -inset-1 rounded-2xl opacity-30 blur-lg transition duration-500 group-hover:opacity-40"></div>
+
+  <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-[#110b22]/90 shadow-2xl">
+    <!-- Window bar -->
+    <div class="flex items-center justify-between border-b border-white/5 bg-[#19112f] px-4 py-3">
+      <div class="flex items-center gap-1.5">
+        <span class="h-3 w-3 rounded-full bg-rose-500/80"></span>
+        <span class="h-3 w-3 rounded-full bg-amber-500/80"></span>
+        <span class="h-3 w-3 rounded-full bg-emerald-500/80"></span>
+      </div>
+      <span class="font-mono text-xs text-zinc-500">~ /status</span>
+    </div>
+
+    <!-- Body -->
+    <div class="space-y-4 p-5">
+      {
+        status.availableForHire && (
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#1a0f2e] px-3 py-1">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-300">Available for hire</span>
+          </div>
+        )
+      }
+
+      <dl class="space-y-3 font-mono text-sm">
+        {
+          status.nowListening && (
+            <div class="flex items-center justify-between">
+              <dt class="flex items-center gap-2 text-zinc-500">
+                <Icon name="music" size={14} class="accent-text" /> listening
+              </dt>
+              <dd class="font-semibold text-zinc-200">{status.nowListening}</dd>
+            </div>
+          )
+        }
+        {
+          typeof status.dayStreak === 'number' && (
+            <div class="flex items-center justify-between">
+              <dt class="flex items-center gap-2 text-zinc-500">
+                <Icon name="flame" size={14} class="text-rose-500" /> streak
+              </dt>
+              <dd class="font-semibold text-zinc-200">{status.dayStreak} days</dd>
+            </div>
+          )
+        }
+        <div class="flex items-center justify-between">
+          <dt class="flex items-center gap-2 text-zinc-500">
+            <Icon name="sparkles" size={14} class="accent-text" /> status
+          </dt>
+          <dd class="font-semibold text-zinc-200">shipping</dd>
+        </div>
+      </dl>
+
+      {
+        status.toolbox && status.toolbox.length > 0 && (
+          <div class="border-t border-white/5 pt-4">
+            <span class="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-500">Toolbox</span>
+            <div class="flex flex-wrap gap-2">
+              {status.toolbox.map((tech) => (
+                <span class="rounded-lg border border-white/5 bg-[#110a1f]/90 px-2.5 py-1 text-xs font-medium text-zinc-400">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
