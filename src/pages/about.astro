@@ -5,28 +5,29 @@ import { site, social } from '../config';
 ---
 
 <BaseLayout title="About" description="About acroistrash.">
-  <article class="relative overflow-hidden rounded-3xl border border-white/5 bg-[#110b22]/70 p-6 shadow-2xl sm:p-9">
-    <div class="accent-gradient pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-tr-3xl opacity-[0.07] blur-2xl"></div>
+  <article class="relative overflow-hidden rounded-2xl border border-white/5 bg-zinc-950/40 p-6 shadow-2xl backdrop-blur-sm sm:p-9">
+    <span class="glossy-top"></span>
 
-    <div class="prose-glass relative max-w-none">
-      <h1 class="text-3xl font-black tracking-tight sm:text-4xl">About</h1>
+    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// Personal Archive</span>
+    <div class="prose-glass mt-3 max-w-none">
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">About</h1>
       <p>
         Hi — I'm {site.name}. This page is a placeholder; edit it in
         <code>src/pages/about.astro</code> to introduce yourself.
       </p>
       <p>
         Write about who you are, what you work on, and how people can reach you.
-        Update your name, tagline, socials, and status-card details in
+        Update your name, tagline, socials, hero stats, and status-card details in
         <code>src/config.ts</code>.
       </p>
     </div>
 
-    <div class="relative mt-8 flex flex-wrap gap-3 border-t border-white/10 pt-6">
-      <a href={social.github} class="flex items-center gap-2 rounded-xl border border-white/10 bg-[#1c1233] px-4 py-2 text-sm font-bold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
-        <Icon name="github" size={15} /> GitHub
+    <div class="mt-8 flex flex-wrap gap-3 border-t border-white/10 pt-6">
+      <a href={social.github} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
+        <Icon name="github" size={14} /> GitHub
       </a>
-      <a href={social.twitter} class="flex items-center gap-2 rounded-xl border border-white/10 bg-[#1c1233] px-4 py-2 text-sm font-bold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
-        <Icon name="twitter" size={15} /> Twitter
+      <a href={social.twitter} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
+        <Icon name="twitter" size={14} /> Twitter
       </a>
     </div>
   </article>

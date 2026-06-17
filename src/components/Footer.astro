@@ -6,17 +6,13 @@ const year = new Date().getFullYear();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<footer class="mt-24 border-t border-white/5 bg-[#090610] py-12">
-  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-xs text-zinc-500 md:flex-row">
-    <p>&copy; {year} {site.name}. Built with Astro.</p>
-    <div class="flex items-center gap-4">
-      <a href={`${base}/articles/`} class="transition-colors hover:text-zinc-300">Articles</a>
-      <span>&bull;</span>
-      <a href={`${base}/rss.xml`} class="transition-colors hover:text-zinc-300">RSS Feed</a>
-      <span>&bull;</span>
-      <span class="flex items-center gap-1">
-        Made with <Icon name="heart" size={12} class="accent-text" />
-      </span>
-    </div>
+<footer class="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-6 border-t border-white/5 px-6 py-12 font-mono text-xs text-zinc-500 md:flex-row">
+  <p>&copy; {year} {site.name}. All rights, designs &amp; aesthetics reserved.</p>
+  <div class="flex items-center gap-4">
+    <a href={`${base}/articles/`} class="no-underline transition-colors hover:text-zinc-300">ARTICLES</a>
+    <span>&bull;</span>
+    <a href={`${base}/rss.xml`} class="no-underline transition-colors hover:text-zinc-300">RSS</a>
+    <span>&bull;</span>
+    <span class="flex items-center gap-1">Made with <Icon name="heart" size={11} class="accent-text" /></span>
   </div>
 </footer>

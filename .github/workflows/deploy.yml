@@ -12,7 +12,6 @@ on:
   push:
     branches:
       - main
-      - claude/personal-website-articles-projects-g8lqh2
   workflow_dispatch:
 
 permissions:

@@ -23,3 +23,10 @@ export const status = {
   dayStreak: 26,
   toolbox: ['Astro', 'TypeScript', 'React', 'Node.js', 'TailwindCSS', 'Rust'],
 };
+
+// Small stats row shown under the hero. Edit freely or set to [] to hide.
+export const stats = [
+  { value: '04+', label: 'Years Coding' },
+  { value: '12', label: 'Shipped Apps' },
+  { value: '100%', label: 'Open Source' },
+];

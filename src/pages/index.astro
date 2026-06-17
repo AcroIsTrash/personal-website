@@ -6,7 +6,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import StatusCard from '../components/StatusCard.astro';
 import Icon from '../components/Icon.astro';
 import { readingTime } from '../utils/readingTime';
-import { site } from '../config';
+import { site, stats } from '../config';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -15,103 +15,101 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 2);
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
-  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured))
-  .slice(0, 2);
+const allProjects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured)
+);
+const projects = allProjects.slice(0, 2);
 ---
 
 <BaseLayout title={site.name} wide>
-  <div class="space-y-16">
-    <!-- Split hero -->
-    <section class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
-      <div class="space-y-6 lg:col-span-7">
-        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#1a0f2e] px-3 py-1">
-          <span class="h-2 w-2 animate-pulse rounded-full bg-rose-500"></span>
-          <span class="accent-text text-xs font-bold uppercase tracking-widest">Personal site</span>
-        </div>
+  <!-- Hero -->
+  <section class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="space-y-8 lg:col-span-7">
+      <div class="inline-flex items-center gap-2 rounded-full border border-white/5 bg-zinc-900/40 px-3 py-1 backdrop-blur-md">
+        <span class="accent-dot inline-block h-1.5 w-1.5 animate-pulse rounded-full"></span>
+        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">Personal Archive // v2</span>
+      </div>
 
-        <h1 class="text-5xl font-black leading-tight tracking-tight sm:text-6xl">
-          Hi, I'm <span class="accent-clip">{site.name}</span> 👋
+      <div class="space-y-4">
+        <h1 class="font-display text-4xl font-extrabold leading-[1.1] tracking-tight text-white md:text-6xl">
+          Hi, I'm <span class="accent-clip">{site.name}</span>
+          <span class="inline-block origin-bottom cursor-pointer transition-transform duration-300 hover:scale-125">👋</span>
         </h1>
-
-        <p class="max-w-xl text-lg leading-relaxed text-zinc-400">{site.tagline}</p>
-
-        <div class="flex flex-wrap items-center gap-3 pt-2">
-          <a href={`${base}/projects/`} class="accent-gradient accent-glow flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white no-underline transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90">
-            Explore Projects <Icon name="folder-git-2" size={16} />
-          </a>
-          <a href={`${base}/articles/`} class="flex items-center gap-2 rounded-xl border border-white/5 bg-[#140e24] px-5 py-2.5 text-sm font-bold text-zinc-300 no-underline transition-all hover:border-white/10 hover:text-white">
-            Read Articles <Icon name="arrow-right" size={16} />
-          </a>
-        </div>
+        <p class="max-w-xl text-base font-light leading-relaxed text-zinc-400 md:text-lg">{site.tagline}</p>
       </div>
 
-      <div class="lg:col-span-5">
-        <StatusCard />
+      <div class="flex flex-col gap-4 pt-2 sm:flex-row">
+        <a href={`${base}/projects/`} class="accent-gradient group inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-xs font-semibold tracking-wide text-white no-underline transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 active:scale-95">
+          Explore Projects <Icon name="arrow-right" size={14} class="transition-transform group-hover:translate-x-1" />
+        </a>
+        <a href={`${base}/articles/`} class="group inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/50 px-6 py-3.5 text-xs font-semibold tracking-wide text-zinc-200 no-underline transition-all duration-300 hover:border-white/20 hover:bg-zinc-900 hover:text-white active:scale-95">
+          Read Articles <Icon name="book-open" size={14} class="text-zinc-400 transition-colors group-hover:text-white" />
+        </a>
       </div>
-    </section>
 
-    <!-- Asymmetric grid: latest articles + highlighted projects -->
-    <section class="grid grid-cols-1 gap-8 pt-4 lg:grid-cols-12">
-      <!-- Articles (major column) -->
-      <div class="space-y-6 lg:col-span-7">
-        <div class="flex items-center justify-between border-b border-white/5 pb-4">
-          <div class="flex items-center gap-3">
-            <span class="accent-text rounded-xl border border-white/10 bg-[#1a0f2e] p-2">
-              <Icon name="book-open" size={18} />
-            </span>
-            <div>
-              <h2 class="text-xl font-bold tracking-tight text-white">Latest Articles</h2>
-              <p class="text-xs text-zinc-500">Thoughts, notes, and technical breakthroughs</p>
-            </div>
+      {
+        stats.length > 0 && (
+          <div class="grid max-w-lg grid-cols-3 gap-6 border-t border-white/5 pt-10">
+            {stats.map((s) => (
+              <div>
+                <p class="font-display text-2xl font-bold text-white">{s.value}</p>
+                <p class="font-mono text-[10px] uppercase tracking-widest text-zinc-500">{s.label}</p>
+              </div>
+            ))}
           </div>
-          <a href={`${base}/articles/`} class="accent-text text-xs font-bold no-underline transition-all hover:opacity-80">View All →</a>
-        </div>
-        <div class="space-y-4">
-          {
-            articles.map((a) => (
-              <ArticleCard
-                href={`${base}/articles/${a.slug}/`}
-                title={a.data.title}
-                date={fmt(a.data.pubDate)}
-                readTime={readingTime(a.body)}
-                excerpt={a.data.description}
-                tags={a.data.tags}
-              />
-            ))
-          }
-        </div>
-      </div>
+        )
+      }
+    </div>
 
-      <!-- Projects (secondary column) -->
-      <div class="space-y-6 lg:col-span-5">
-        <div class="flex items-center justify-between border-b border-white/5 pb-4">
-          <div class="flex items-center gap-3">
-            <span class="accent-text rounded-xl border border-white/10 bg-[#1a0f2e] p-2">
-              <Icon name="folder-git-2" size={18} />
-            </span>
-            <div>
-              <h2 class="text-xl font-bold tracking-tight text-white">Highlighted Projects</h2>
-              <p class="text-xs text-zinc-500">Apps &amp; repositories</p>
-            </div>
-          </div>
-          <a href={`${base}/projects/`} class="accent-text text-xs font-bold no-underline transition-all hover:opacity-80">All →</a>
-        </div>
-        <div class="space-y-4">
-          {
-            projects.map((p) => (
-              <ProjectCard
-                href={`${base}/projects/${p.slug}/`}
-                title={p.data.title}
-                description={p.data.description}
-                tags={p.data.tags}
-                repo={p.data.repo}
-                link={p.data.link}
-              />
-            ))
-          }
-        </div>
+    <div class="lg:col-span-5">
+      <StatusCard />
+    </div>
+  </section>
+
+  <!-- Latest articles + highlighted projects -->
+  <section class="mt-16 grid grid-cols-1 gap-8 border-t border-white/5 pt-12 lg:grid-cols-12 lg:gap-12">
+    <div class="space-y-5 lg:col-span-7">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">Latest Articles</span>
+        <a href={`${base}/articles/`} class="accent-text font-mono text-[10px] uppercase tracking-widest no-underline transition-opacity hover:opacity-80">View All →</a>
       </div>
-    </section>
-  </div>
+      <div class="space-y-4">
+        {
+          articles.map((a) => (
+            <ArticleCard
+              href={`${base}/articles/${a.slug}/`}
+              title={a.data.title}
+              date={fmt(a.data.pubDate)}
+              readTime={readingTime(a.body)}
+              excerpt={a.data.description}
+              tags={a.data.tags}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="space-y-5 lg:col-span-5">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">Highlighted</span>
+        <a href={`${base}/projects/`} class="accent-text font-mono text-[10px] uppercase tracking-widest no-underline transition-opacity hover:opacity-80">All →</a>
+      </div>
+      <div class="space-y-4">
+        {
+          projects.map((p, i) => (
+            <ProjectCard
+              href={`${base}/projects/${p.slug}/`}
+              title={p.data.title}
+              description={p.data.description}
+              tags={p.data.tags}
+              repo={p.data.repo}
+              link={p.data.link}
+              index={i + 1}
+              total={allProjects.length}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </BaseLayout>
