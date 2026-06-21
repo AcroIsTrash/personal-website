@@ -2,17 +2,20 @@
 // hero, status card, and footer — no need to touch component markup.
 
 export const site = {
-  name: 'acroistrash',
+  name: 'Joseph Le Brun',
   // Shown in the hero. Keep it punchy.
   tagline:
-    'I write about engineering clean, lightweight systems, publish neat concepts, and craft modern visual solutions. This is my corner of the web.',
+    'AI response evaluator and data annotator. I write about AI evaluation, LLM quality, and RLHF — the invisible human judgment behind the models — and build the engineering and infrastructure around it.',
   // Default accent: 'rose' | 'violet' | 'cyan' | 'amber'
   defaultAccent: 'rose' as const,
 };
 
 export const social = {
   github: 'https://github.com/AcroIsTrash',
-  twitter: 'https://twitter.com/',
+  linkedin: 'https://www.linkedin.com/in/joseph-romero-le-brun-88aa43239',
+  email: 'acrolebrun@gmail.com',
+  // Set to '' to hide. (Twitter/X is hidden by default.)
+  twitter: '',
 };
 
 // The little "status" extras in the hero side card. All optional —
@@ -21,12 +24,8 @@ export const status = {
   availableForHire: true,
   nowListening: 'Pink Floyd',
   dayStreak: 26,
-  toolbox: ['Astro', 'TypeScript', 'React', 'Node.js', 'TailwindCSS', 'Rust'],
+  toolbox: ['Python', 'LangChain', 'Pydantic', 'AWS', 'Terraform', 'Docker'],
 };
 
 // Small stats row shown under the hero. Edit freely or set to [] to hide.
-export const stats = [
-  { value: '04+', label: 'Years Coding' },
-  { value: '12', label: 'Shipped Apps' },
-  { value: '100%', label: 'Open Source' },
-];
+export const stats: { value: string; label: string }[] = [];

@@ -1,34 +1,118 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
-import { site, social } from '../config';
+import { social } from '../config';
+
+const roles = [
+  {
+    title: 'AI Response Evaluator & Data Annotator',
+    org: 'DataAnnotation.tech · Remote',
+    dates: '2026 – Present',
+    points: [
+      'Evaluate and rate AI-generated responses for quality, accuracy, and alignment with human preferences — directly supporting LLM training.',
+      'Provide structured feedback across instruction-following, factual correctness, and response quality.',
+      'Work independently to meet project deadlines and quality benchmarks across varied annotation tasks.',
+    ],
+  },
+  {
+    title: 'Operations Supervisor',
+    org: 'UPS · Ontario, CA',
+    dates: '2022 – 2024',
+    points: [
+      'Promoted from associate to supervisor; led teams in a high-volume automated warehouse.',
+      'Coaching, training, and performance management; first-line response for operational incidents.',
+      'Supervisor of the Month (Jun 2022) · Frontline Supervisor School, Top of Class · Certified Safety Trainer.',
+    ],
+  },
+  {
+    title: 'Web Developer / Technical Support',
+    org: 'Perry Floors · Upland, CA',
+    dates: '2019 – 2020',
+    points: [
+      'Troubleshot HTML, CSS, and JavaScript issues in a live production environment.',
+      'Translated problems for non-technical users and documented resolutions and procedures.',
+    ],
+  },
+];
 ---
 
-<BaseLayout title="About" description="About acroistrash.">
+<BaseLayout title="About" description="Joseph Romero Le Brun — AI response evaluator, data annotator, and builder.">
   <article class="relative overflow-hidden rounded-2xl border border-white/5 bg-zinc-950/40 p-6 shadow-2xl backdrop-blur-sm sm:p-9">
     <span class="glossy-top"></span>
 
-    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// Personal Archive</span>
+    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// About</span>
     <div class="prose-glass mt-3 max-w-none">
-      <h1 class="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">About</h1>
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Joseph Romero Le Brun</h1>
       <p>
-        Hi — I'm {site.name}. This page is a placeholder; edit it in
-        <code>src/pages/about.astro</code> to introduce yourself.
+        I'm an <strong>AI response evaluator and data annotator</strong> working remotely on the
+        human judgment that goes into training large language models — preference ranking,
+        response evaluation, rubric adherence, and adversarial prompting. I came to it from
+        warehouse operations and quality control, and it turns out the core skill is the same:
+        telling the difference between something that's <em>right</em> and something that just
+        <em>looks right</em>.
       </p>
       <p>
-        Write about who you are, what you work on, and how people can reach you.
-        Update your name, tagline, socials, hero stats, and status-card details in
-        <code>src/config.ts</code>.
+        Alongside the evaluation work, I build. Lately that's meant standing up real cloud
+        infrastructure for AI agents (LangChain on AWS, containerized and managed with
+        Terraform) and engineering a deterministic, server-authoritative game backend in Python.
+        I write here to document the field from the inside and to build a portfolio that hiring
+        managers in AI can actually evaluate.
       </p>
     </div>
 
-    <div class="mt-8 flex flex-wrap gap-3 border-t border-white/10 pt-6">
-      <a href={social.github} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
-        <Icon name="github" size={14} /> GitHub
-      </a>
-      <a href={social.twitter} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
-        <Icon name="twitter" size={14} /> Twitter
-      </a>
+    <div class="mt-10">
+      <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// Experience</span>
+      <div class="mt-5 space-y-6">
+        {
+          roles.map((r) => (
+            <div class="rounded-xl border border-white/5 bg-zinc-900/30 p-5">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h2 class="font-display text-base font-bold text-white">{r.title}</h2>
+                <span class="font-mono text-[10px] uppercase tracking-wider text-zinc-500">{r.dates}</span>
+              </div>
+              <p class="mt-0.5 font-mono text-xs text-zinc-400">{r.org}</p>
+              <ul class="mt-3 space-y-1.5">
+                {r.points.map((p) => (
+                  <li class="flex gap-2.5 text-sm font-light text-zinc-400">
+                    <span class="accent-dot mt-1.5 h-1 w-1 flex-shrink-0 rounded-full" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-4 font-mono text-[11px] text-zinc-600">
+        Also: warehouse roles at Nordstrom & EA Sween, project management, and self-employed
+        automotive interior repair. Full history on LinkedIn.
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// Toolbox</span>
+      <p class="mt-3 text-sm font-light leading-relaxed text-zinc-400">
+        Python · LangChain / LangGraph · Pydantic · AI/LLM annotation & evaluation · RLHF
+        preference labeling · rubric design · AWS · Terraform · Docker · HTML / CSS / JavaScript.
+      </p>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-3 border-t border-white/10 pt-6">
+      {social.github && (
+        <a href={social.github} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
+          <Icon name="github" size={14} /> GitHub
+        </a>
+      )}
+      {social.linkedin && (
+        <a href={social.linkedin} class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-200 no-underline transition-colors hover:border-white/20 hover:text-white">
+          <Icon name="linkedin" size={14} /> LinkedIn
+        </a>
+      )}
+      {social.email && (
+        <a href={`mailto:${social.email}`} class="accent-gradient inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold text-white no-underline transition-opacity hover:opacity-90">
+          <Icon name="mail" size={14} /> Get in touch
+        </a>
+      )}
     </div>
   </article>
 </BaseLayout>
