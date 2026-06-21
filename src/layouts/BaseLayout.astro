@@ -11,7 +11,7 @@ interface Props {
   wide?: boolean;
 }
 
-const { title, description = 'Articles and projects by acroistrash.', wide = false } = Astro.props;
+const { title, description = 'Joseph Le Brun — AI response evaluator and data annotator. Articles on AI evaluation, LLM quality, and the engineering around it.', wide = false } = Astro.props;
 const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---

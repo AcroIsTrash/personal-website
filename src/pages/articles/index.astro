@@ -16,10 +16,11 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
 <BaseLayout title="Articles" description="Articles by acroistrash." wide>
   <div class="mx-auto max-w-4xl space-y-8">
     <div class="space-y-4 py-6 text-center">
-      <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// The Dev Journal</span>
+      <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">// AI Evaluation Journal</span>
       <h1 class="font-display text-4xl font-extrabold tracking-tight text-white">Articles</h1>
       <p class="mx-auto max-w-md text-sm font-light text-zinc-400">
-        Architectural insights, design notes, lessons from failures, and code snippets.
+        Notes from inside AI evaluation and data annotation — RLHF, rubric design, LLM quality,
+        and the engineering around it.
       </p>
       <div class="relative mx-auto max-w-md pt-2">
         <span class="absolute left-3.5 top-1/2 mt-1 -translate-y-1/2 text-zinc-500">
