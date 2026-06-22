@@ -39,11 +39,31 @@ defined as code.
 > or SSM Parameter Store, give the EC2 instance an IAM role, and have the app
 > fetch the secret at startup — full audit trail, no keys typed into terminals.
 
-## Layer 3 — CI/CD 🔲
+## Layer 3 — CI/CD 🚧
 
 Push to `main`, tests run, the agent redeploys automatically — no more `scp`. A
 GitHub Actions pipeline builds the Docker image, pushes it to ECR, and redeploys
 on EC2 with no manual steps after `git push`.
+
+**Started:**
+
+- Terraform for a private **ECR** repository to hold the agent image, with a
+  lifecycle policy that expires untagged images so the registry doesn't grow
+  unbounded.
+- **GitHub OIDC** as the auth path into AWS — a federated identity provider and
+  a scoped IAM role GitHub Actions assumes per run, so there are no long-lived
+  AWS keys stored as repo secrets.
+- A first **GitHub Actions workflow** skeleton: checkout → run the agent's test
+  suite → on `main`, build and push the image to ECR. Build/push is gated behind
+  green tests.
+
+**Still to wire up:**
+
+- The redeploy step on EC2 — pull the new image tag and restart the container
+  (SSM `RunCommand` so there's no inbound SSH from CI).
+- Immutable image tagging by commit SHA, with `latest` tracking `main`.
+- A smoke check after redeploy that fails the pipeline if the agent doesn't come
+  back healthy.
 
 ## Layer 4 — Observability + Self-Hosted Model 🔲
 
